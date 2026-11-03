@@ -1,8 +1,8 @@
-# cua-agent-desktop
+# reavion-desktop
 
 Isolated Linux desktop sandbox for AI agents: XFCE runs inside Docker, **Reavion Driver** exposes computer-use tools over MCP, and a human can watch or take over via **noVNC** in a browser.
 
-Driver source is built from private [`reavion-driver`](https://github.com/helderperez-dev/reavion-driver) (vendored under `vendor/reavion-driver`). Desktop base remains `trycua/xfce-cua`. This seat image repo is **`helderperez-dev/cua-agent-desktop`** (private).
+Driver source is built from private [`reavion-driver`](https://github.com/helderperez-dev/reavion-driver) (vendored under `vendor/reavion-driver`). The desktop is `vendor/reavion-xfce` (Reavion XFCE, originally forked from trycua `xfce-cua`). This seat image repo is **`helderperez-dev/reavion-desktop`** (private; named `cua-agent-desktop` before 2026-11-03).
 
 Locally you can use a stdio MCP bridge. For **Railway / remote**, the same container exposes **Streamable HTTP MCP** and noVNC behind Caddy on a single `$PORT`.
 
@@ -101,7 +101,7 @@ More detail: [docs/architecture.md](docs/architecture.md).
 
 | Symptom | What to try |
 |---|---|
-| Container / socket not ready | `./scripts/status.sh`; `docker exec cua-agent-desktop supervisorctl status` |
+| Container / socket not ready | `./scripts/status.sh`; `docker exec reavion-desktop supervisorctl status` |
 | `/health` fails | Wait for Caddy; check `edge-proxy` logs |
 | MCP HTTP 401 | Set matching `MCP_API_KEY` / Bearer header |
 | VNC password rejected | `VNC_PW` in `.env` / Railway vars; recreate container after change |

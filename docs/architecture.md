@@ -28,7 +28,7 @@ Local optional path (stdio):
 
 | Component | Owns |
 |---|---|
-| This project (`cua-agent-desktop`) | Image build, lifecycle, edge proxy, MCP HTTP gateway, Chrome + profile volume |
+| This project (`reavion-desktop`) | Image build, lifecycle, edge proxy, MCP HTTP gateway, Chrome + profile volume |
 | Reavion Driver (`vendor/reavion-driver` ← `reavion-driver` repo) | Screenshots, clicks, typing, window discovery (MCP tools) |
 | Base image (`trycua/xfce-cua`) | XFCE + noVNC stack |
 | Supergateway | stdio MCP → Streamable HTTP |

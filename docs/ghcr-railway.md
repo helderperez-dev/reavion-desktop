@@ -34,7 +34,7 @@ Control plane production (reliable path):
 
 ```env
 MACHINE_SOURCE_IMAGE=
-MACHINE_SOURCE_REPO=helderperez-dev/cua-agent-desktop
+MACHINE_SOURCE_REPO=helderperez-dev/reavion-desktop
 MACHINE_VOLUME_MOUNTS=/home/reavion/.config/google-chrome
 ```
 
@@ -58,7 +58,7 @@ Package settings → Danger Zone → Change visibility → **Public**
 
 ## Scratch path notes
 
-- Repo `cua-agent-desktop` must be cloneable by Railway (public, or connected GitHub App).
+- Repo `reavion-desktop` must be cloneable by Railway (public, or connected GitHub App).
 - Control plane sets `dockerfilePath=Dockerfile.vendor` after create when image is empty.
 - Repo [`railway.toml`](../railway.toml) also pins `dockerfilePath = "Dockerfile.vendor"`.
 

@@ -122,7 +122,12 @@ def check_seat(base: str, key: str, want_theme: str | None) -> list[str]:
     try:
         if 'location.replace("index.html"' not in fetch("/vnc.html"):
             problems.append("vnc.html does not forward to the Reavion gate")
-        if "reavion-mark-white.png" not in fetch("/app/styles/reavion.css"):
+        # Fetch the stylesheet exactly as the page references it (with ?v=): the edge
+        # caches CSS, so the bare path can be stale while customers get the new file.
+        index = fetch("/index.html")
+        m = re.search(r'app/styles/reavion\.css\?v=[^"\']+', index)
+        css_path = "/" + (m.group(0) if m else "app/styles/reavion.css")
+        if "reavion-mark-white.png" not in fetch(css_path):
             problems.append("noVNC control rail handle is not the Reavion tab")
     except urllib.error.URLError as exc:
         problems.append(f"edge unreachable: {exc}")
@@ -170,9 +175,18 @@ def check_seat(base: str, key: str, want_theme: str | None) -> list[str]:
             height = int(fields.get("height", "0"))
         except ValueError:
             height = 0
-        for w in windows:
-            if w.get("app_name") == "Xfce4-panel" and height and w.get("height", 0) > 8:
-                if w.get("y", 0) + w.get("height", 0) > height + 2:
+        panels = [w for w in windows if w.get("app_name") == "Xfce4-panel"]
+        # An autohiding dock is a thin hover strip on the bottom edge plus the dock
+        # itself parked just below the screen. After a missed resize the strip sits
+        # above the real bottom edge, which is the "floating dock" bug.
+        strips = [w for w in panels if w.get("height", 0) <= 8]
+        for w in strips:
+            bottom = w.get("y", 0) + w.get("height", 0)
+            if height and abs(bottom - height) > 2:
+                problems.append(f"dock hover strip ends at y={bottom}, screen height {height} (dock not on the bottom edge)")
+        for w in panels:
+            if w.get("height", 0) > 8 and height and w.get("y", 0) + w.get("height", 0) > height + 2:
+                if not strips:
                     problems.append(f"a panel sits off screen (y={w.get('y')}, screen height {height})")
         print(f"      {title}")
     finally:

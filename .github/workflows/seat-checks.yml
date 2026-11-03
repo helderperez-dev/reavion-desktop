@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          path: reavion-docker
+          path: reavion-desktop
 
       - name: Clone sibling sources (noVNC, driver)
         id: siblings
@@ -30,7 +30,7 @@ jobs:
           echo "skip=0" >> "$GITHUB_OUTPUT"
 
       - name: Preflight
-        working-directory: reavion-docker
+        working-directory: reavion-desktop
         env:
           SKIP_VENDOR_DRIFT: ${{ steps.siblings.outputs.skip }}
         run: scripts/preflight.sh

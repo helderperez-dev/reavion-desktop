@@ -12,10 +12,10 @@ One service runs the full stack: XFCE desktop, Reavion Driver, noVNC, and a **re
 
 **Today:** `MACHINE_SOURCE_IMAGE` is empty, so every seat is built from this repo with `Dockerfile.vendor` (see [seat-image.md](seat-image.md)). **Optional fast path:** set `MACHINE_SOURCE_IMAGE=docker.io/helderbuilds/reavion-desktop:main` (public, CI-built from the same vendor copies) so new seats skip the Rust compile.
 
-**Fallback:** Deploy from GitHub (**private** `helderperez-dev/cua-agent-desktop`) with `Dockerfile.vendor` (compiles `vendor/reavion-driver`).
+**Fallback:** Deploy from GitHub (**private** `helderperez-dev/reavion-desktop`) with `Dockerfile.vendor` (compiles `vendor/reavion-driver`).
 
 1. Generate a public domain; target port **8080** (or whatever `$PORT` Railway assigns — the app reads `PORT`).
-2. Control plane `MACHINE_SOURCE_REPO` stays `helderperez-dev/cua-agent-desktop` when not using the GHCR image.
+2. Control plane `MACHINE_SOURCE_REPO` stays `helderperez-dev/reavion-desktop` when not using the GHCR image.
 
 ### Volume path migration (`cua` → `reavion`)
 

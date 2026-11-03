@@ -140,8 +140,8 @@ USER root
 services:
   desktop:
     build: .
-    image: localhost/cua-agent-desktop:local
-    container_name: cua-agent-desktop
+    image: localhost/reavion-desktop:local
+    container_name: reavion-desktop
     mem_limit: 4g
     cpus: 2
     shm_size: 512m
@@ -173,7 +173,7 @@ Purpose: what Cursor / Claude / Codex launches. It must **not** define tools. It
 #!/usr/bin/env bash
 set -euo pipefail
 RUNTIME="${CUA_RUNTIME:-docker}"          # docker | podman
-CONTAINER="${CUA_CONTAINER:-cua-agent-desktop}"
+CONTAINER="${REAVION_CONTAINER:-reavion-desktop}"
 SOCKET="${CUA_SOCKET:-/run/user/1000/cua.sock}"
 DRIVER="${CUA_DRIVER:-/usr/local/libexec/cua-desktop/cua-driver}"
 

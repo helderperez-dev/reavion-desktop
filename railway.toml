@@ -3,6 +3,14 @@ builder = "DOCKERFILE"
 # Self-contained compile when Railway builds from this repo (scratch path).
 # Fast path: set control-plane MACHINE_SOURCE_IMAGE=docker.io/helderbuilds/reavion-desktop:main
 dockerfilePath = "Dockerfile.vendor"
+# Every seat redeploys on a matching push and its open sessions restart, so only
+# files that change the image count. Docs, CI and helper scripts do not.
+watchPatterns = [
+  "Dockerfile.vendor",
+  "railway.toml",
+  "image/**",
+  "vendor/**",
+]
 
 [deploy]
 # Desktop + driver + edge need a few minutes on first boot.

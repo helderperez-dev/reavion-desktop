@@ -4,7 +4,7 @@ Read this before changing anything a customer sees on their machine: desktop, me
 
 ## What Railway actually runs
 
-Every seat (one Railway service per customer machine) is built **from this repo** (`helderperez-dev/cua-agent-desktop`) with [`Dockerfile.vendor`](../Dockerfile.vendor) (see [`railway.toml`](../railway.toml)). Railway redeploys **every seat** on each push to `main`.
+Every seat (one Railway service per customer machine) is built **from this repo** (`helderperez-dev/reavion-desktop`, local folder `reavion-desktop`; repo `cua-agent-desktop` and folder `reavion-docker` before 2026-11-03) with [`Dockerfile.vendor`](../Dockerfile.vendor) (see [`railway.toml`](../railway.toml)). Railway redeploys **every seat** on each push to `main`.
 
 `Dockerfile.vendor` is self-contained. It builds from the copies in `vendor/`, never from a registry:
 
@@ -23,7 +23,7 @@ The registry images are **not** on the seat path today:
 | `ghcr.io/helderperez-dev/reavion-xfce` | `reavion-images` `release-xfce.yml` from `images/xfce` | No. `release.yml` rebuilds XFCE from vendor instead |
 | `ghcr.io/helderperez-dev/reavion-vnc`, `reavion-driver` | their repos | No. Seats compile from vendor |
 
-Pushing `reavion-vnc` or `reavion-images` triggers the image cascade (vnc → xfce → desktop) on GitHub Actions. It only publishes images. **It does not change any seat.** Only a push to this repo does.
+Pushing `reavion-vnc` or `reavion-images` publishes their own images on GitHub Actions. **It does not change any seat** and no longer dispatches a release here. Only a push to this repo that touches the image (see `watchPatterns`) does.
 
 ## Guard rails (keep them on)
 
@@ -34,6 +34,8 @@ Pushing `reavion-vnc` or `reavion-images` triggers the image cascade (vnc → xf
 | `.github/workflows/seat-checks.yml` | Same preflight in CI on every push and PR |
 | Railway "wait for CI" (`checkSuites` on each seat's deploy trigger) | Seats rebuilding before the checks pass. The backend sets it on every machine it creates or wipes (`RailwayClient.require_passing_checks`) |
 | Deploy trigger on every seat | A seat that never picks up a new image. Seats created through the API had none (the spare `jg4grp` was stuck on an old build); the backend now creates one |
+| `watchPatterns` in `railway.toml` | Seats restarting (and cutting customer sessions) for docs, CI, or helper-script changes. Only `Dockerfile.vendor`, `railway.toml`, `image/**`, `vendor/**` trigger a seat rebuild |
+| No cross-repo dispatch into this repo | `reavion-images` and `reavion-driver` used to dispatch release runs here; Railway then held every seat deploy until those image builds (about 25 minutes each) finished |
 | `scripts/verify-seat.py` | A deploy that "succeeded" but shows the stock desktop. Reads the real menu icon, theme version, watcher, dock position, and noVNC branding from each seat |
 
 ## Making a change

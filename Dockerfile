@@ -1,5 +1,5 @@
 # reavion-desktop (published as ghcr.io/helderperez-dev/reavion-desktop)
-# Repo: helderperez-dev/cua-agent-desktop
+# Repo: helderperez-dev/reavion-desktop
 #
 # Default: pull prebuilt XFCE base + reavion-driver from GHCR (cascade CI).
 # Local override examples:
@@ -22,7 +22,7 @@ ARG DRIVER_IMAGE
 
 LABEL org.opencontainers.image.title="reavion-desktop" \
       org.opencontainers.image.description="Isolated Linux desktop for AI agents via Reavion Driver MCP + noVNC" \
-      org.opencontainers.image.source="https://github.com/helderperez-dev/cua-agent-desktop" \
+      org.opencontainers.image.source="https://github.com/helderperez-dev/reavion-desktop" \
       reavion.desktop.managed="true" \
       reavion.desktop.driver="reavion-driver" \
       reavion.desktop.driver.version="${REAVION_DRIVER_VERSION}" \
