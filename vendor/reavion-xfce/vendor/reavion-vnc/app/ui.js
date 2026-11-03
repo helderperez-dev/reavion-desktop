@@ -1137,6 +1137,7 @@ const UI = {
     connectFinished(e) {
         UI.connected = true;
         UI.inhibitReconnect = false;
+        UI.reportScreenSize();
 
         let msg;
         if (UI.getSetting('encrypt')) {
@@ -1149,6 +1150,22 @@ const UI = {
 
         // Do this last because it can only be used on rendered elements
         UI.rfb.focus();
+    },
+
+    // Tell an embedding page (the Reavion app's machine window) the machine's screen
+    // size, so it can keep the window at the same shape. Only width and height are sent.
+    reportScreenSize() {
+        if (window.parent === window || UI.screenSizeTimer) return;
+        let last = "";
+        UI.screenSizeTimer = setInterval(() => {
+            const canvas = document.querySelector("#noVNC_container canvas");
+            if (!canvas || !canvas.width || !canvas.height) return;
+            const now = canvas.width + "x" + canvas.height;
+            if (now === last) return;
+            last = now;
+            window.parent.postMessage(
+                { type: "reavion-vnc-size", width: canvas.width, height: canvas.height }, "*");
+        }, 1000);
     },
 
     disconnectFinished(e) {
