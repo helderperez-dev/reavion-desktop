@@ -52,6 +52,7 @@ exec "${GATEWAY[@]}" \
   --outputTransport streamableHttp \
   --streamableHttpPath /mcp \
   --stateful \
+  --sessionTimeout "${MCP_SESSION_TIMEOUT_MS:-900000}" \
   --port "$MCP_PORT" \
   --host 127.0.0.1 \
   --cors \
