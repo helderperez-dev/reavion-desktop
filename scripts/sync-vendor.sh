@@ -31,7 +31,7 @@ for pair in "${pairs[@]}"; do
     continue
   fi
   if [[ "${kind}" == "vnc" ]]; then ex=("${VNC_EXCLUDES[@]}"); else ex=("${DRIVER_EXCLUDES[@]}"); fi
-  changes="$(rsync -a --delete --dry-run --itemize-changes "${ex[@]}" "${src}" "${dst}" | grep -v '^\.' || true)"
+  changes="$(rsync -a --checksum --delete --dry-run --itemize-changes "${ex[@]}" "${src}" "${dst}" | grep -v '^\.' || true)"
   if [[ -n "${changes}" ]]; then
     drift=1
     echo "== ${kind} differs from ${src}"

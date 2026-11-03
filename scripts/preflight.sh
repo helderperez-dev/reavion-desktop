@@ -43,6 +43,8 @@ grep -q "reavion-desktop-watch.sh" vendor/reavion-xfce/src/scripts/xstartup.sh \
 grep -q 'button-icon" -n -t string -s "reavion-mark"' vendor/reavion-xfce/src/scripts/reavion-desktop-theme.sh \
   || bad "theme script no longer sets the Reavion menu icon"
 [[ -f vendor/reavion-xfce/assets/icons/hicolor/32x32/apps/reavion-mark.png ]] || bad "reavion-mark icon missing"
+[[ -f vendor/reavion-xfce/assets/icons/hicolor/scalable/apps/reavion-mark.svg ]] \
+  || bad "scalable reavion-mark.svg missing (panel icon renders blurry from PNG only)"
 ok "desktop rules"
 
 # 4. noVNC: Reavion gate, handle tab, cache-buster.

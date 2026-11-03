@@ -76,6 +76,8 @@ Rules learned the hard way:
 - **No hand-authored `xfce4-panel.xml`.** A full custom panel file (theme v4) broke the desktop and was removed in v5. Change live properties with `xfconf-query` instead.
 - **No Plank.** It drew a giant grey bar over the VNC desktop.
 - **noVNC resizes the session** to the browser (`resize=remote`). Panels placed before the resize stay at the old bottom edge (the "floating dock"). The watcher restarts the panel, detached with `setsid -f`, when the size changes.
+- **The menu icon is a vector.** `assets/icons/hicolor/scalable/apps/reavion-mark.svg` (traced from the 323px PNG, centered, tight padding) plus PNGs rendered from it at 16 to 256px. The older PNGs were soft downscales with the mark off-center. To change the mark, edit the SVG and re-render the PNG sizes from it.
+- noVNC defaults to JPEG quality 8. At 6, icons and small text looked blurry.
 - `/home/reavion/.config/xfce4` is not on a volume (only Chrome's profile is), so each boot starts from the image, and the theme reapplies.
 
 ## noVNC

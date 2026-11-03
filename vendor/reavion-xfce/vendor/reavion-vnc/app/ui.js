@@ -185,7 +185,15 @@ const UI = {
             }
             WebUtil.writeSetting('reavion_fit_v1', '1');
         }
-        UI.initSetting('quality', 6);
+        // Sharper icons and text: quality 6 visibly softened the desktop.
+        UI.initSetting('quality', 8);
+        // Browsers that saved the old default move up once; a user's own choice stays.
+        if (WebUtil.readSetting('reavion_quality_v1', '') !== '1') {
+            if (WebUtil.readSetting('quality', '8') === '6') {
+                WebUtil.writeSetting('quality', '8');
+            }
+            WebUtil.writeSetting('reavion_quality_v1', '1');
+        }
         UI.initSetting('compression', 2);
         UI.initSetting('shared', true);
         UI.initSetting('view_only', false);
