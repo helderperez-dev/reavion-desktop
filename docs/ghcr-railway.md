@@ -1,5 +1,7 @@
 # Seat images: Docker Hub pull vs scratch build
 
+> Start with [seat-image.md](seat-image.md): which copy each seat layer is built from, how to ship a desktop change, and what broke before.
+
 ## Toggle (control plane)
 
 One env var on `reavion-app-backend`:

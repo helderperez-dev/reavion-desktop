@@ -10,7 +10,7 @@ One service runs the full stack: XFCE desktop, Reavion Driver, noVNC, and a **re
 
 ## 1. Create the service
 
-**Preferred (cascade):** control plane sets `MACHINE_SOURCE_IMAGE=ghcr.io/helderperez-dev/reavion-desktop:main` so seats pull a prebuilt image (no Rust compile on Railway). Authenticate Railway to GHCR for the private package.
+**Today:** `MACHINE_SOURCE_IMAGE` is empty, so every seat is built from this repo with `Dockerfile.vendor` (see [seat-image.md](seat-image.md)). **Optional fast path:** set `MACHINE_SOURCE_IMAGE=docker.io/helderbuilds/reavion-desktop:main` (public, CI-built from the same vendor copies) so new seats skip the Rust compile.
 
 **Fallback:** Deploy from GitHub (**private** `helderperez-dev/cua-agent-desktop`) with `Dockerfile.vendor` (compiles `vendor/reavion-driver`).
 

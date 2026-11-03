@@ -68,6 +68,8 @@ Local edge equivalent: `http://127.0.0.1:6080/mcp` (set `MCP_API_KEY` in `.env`)
 
 ## Deploy on Railway
 
+Changing the desktop, noVNC, or the driver? Read [docs/seat-image.md](docs/seat-image.md) first.
+
 See **[docs/railway.md](docs/railway.md)**. Summary:
 
 1. Deploy this repo (Dockerfile / `railway.toml`)
