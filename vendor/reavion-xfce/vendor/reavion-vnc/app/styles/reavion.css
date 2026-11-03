@@ -234,6 +234,16 @@ body:has(#noVNC_verify_server_dlg.noVNC_open) #noVNC_connect_dlg {
   right: auto !important;
 }
 
+/* Open rail: the mark is already at the top of the rail, so the tab becomes a
+   chevron pointing back to the edge (close). */
+#noVNC_control_bar.noVNC_open #noVNC_control_bar_handle:after {
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 6l-6 6 6 6'/%3E%3C/svg%3E") center / contain no-repeat !important;
+}
+
+.noVNC_right #noVNC_control_bar.noVNC_open #noVNC_control_bar_handle:after {
+  transform: scaleX(-1) !important;
+}
+
 #noVNC_control_bar_hint {
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.45), inset 0 0 12px 10px rgba(18, 18, 20, 0.85) !important;
 }
