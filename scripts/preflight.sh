@@ -38,6 +38,9 @@ fi
 if grep -q -- '-s "whiskermenu"' vendor/reavion-xfce/src/scripts/reavion-desktop-theme.sh; then
   bad "theme script swaps the menu plugin type (the running panel reverts it)"
 fi
+if grep -rnsE "xfce4-panel +(-r|--restart)" vendor/reavion-xfce/src image | grep -vqE '^[^:]+:[0-9]+: *#'; then
+  bad "a seat script runs 'xfce4-panel -r' (pops a 'Failed to restart the panel' dialog); restart over D-Bus"
+fi
 grep -q "reavion-desktop-watch.sh" vendor/reavion-xfce/src/scripts/xstartup.sh \
   || bad "xstartup.sh no longer starts reavion-desktop-watch.sh (panel branding will not apply)"
 grep -q 'button-icon" -n -t string -s "reavion-mark"' vendor/reavion-xfce/src/scripts/reavion-desktop-theme.sh \

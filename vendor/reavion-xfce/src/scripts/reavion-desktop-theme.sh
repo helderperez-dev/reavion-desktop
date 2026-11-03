@@ -171,7 +171,9 @@ if command -v xfconf-query >/dev/null 2>&1 && xset q >/dev/null 2>&1; then
   # One panel restart per theme version so Whisker/Papirus/CSS pick up cleanly.
   if [[ "${REAVION_PANEL_LIVE:-0}" != "1" && ! -f "${PANEL_RESTART_FLAG}" ]] && command -v xfce4-panel >/dev/null 2>&1; then
     if pgrep -u "$(id -u)" -x xfce4-panel >/dev/null 2>&1; then
-      xfce4-panel -r >/dev/null 2>&1 || true
+      # Over D-Bus, never `xfce4-panel -r`: that shows an error dialog when the panel is not on the bus yet.
+      dbus-send --session --type=method_call --dest=org.xfce.Panel /org/xfce/Panel \
+        org.xfce.Panel.Terminate boolean:true >/dev/null 2>&1 || true
       printf '%s\n' "${THEME_VERSION}" > "${PANEL_RESTART_FLAG}"
     fi
   fi
