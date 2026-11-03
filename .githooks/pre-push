@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# Every push to this repo redeploys all customer seats. Block pushes that fail preflight.
+exec "$(git rev-parse --show-toplevel)/scripts/preflight.sh"

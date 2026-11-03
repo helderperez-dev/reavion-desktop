@@ -1,5 +1,7 @@
 # reavion-vnc
 
+> **Reavion seats** serve a vendored copy of this repo. After a change: bump the `?v=` cache-buster in `index.html`, run `reavion-docker/scripts/sync-vendor.sh`, and push `reavion-docker`. Pushing this repo alone does not change any seat. See [reavion-docker/docs/seat-image.md](../reavion-docker/docs/seat-image.md).
+
 Reavion’s HTML5 VNC viewer — private fork of [noVNC](https://github.com/novnc/noVNC) v1.5.0 (MPL-2.0).
 
 Defaults tuned for Reavion seats: `resize=scale`, auto-reconnect. Served from seat images at `/vnc.html`.

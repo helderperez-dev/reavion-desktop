@@ -25,6 +25,17 @@ The registry images are **not** on the seat path today:
 
 Pushing `reavion-vnc` or `reavion-images` triggers the image cascade (vnc → xfce → desktop) on GitHub Actions. It only publishes images. **It does not change any seat.** Only a push to this repo does.
 
+## Guard rails (keep them on)
+
+| Guard | What it stops |
+|---|---|
+| `scripts/preflight.sh` | Theme version mismatch, broken shell scripts, hand-authored panel XML, Plank, Whisker type swap, missing watcher or Reavion icon, lost noVNC branding, vendor drift from `reavion-vnc` / `reavion-driver` |
+| `.githooks/pre-push` (`git config core.hooksPath .githooks` once per clone) | Pushing when preflight fails |
+| `.github/workflows/seat-checks.yml` | Same preflight in CI on every push and PR |
+| Railway "wait for CI" (`checkSuites` on each seat's deploy trigger) | Seats rebuilding before the checks pass. The backend sets it on every machine it creates or wipes (`RailwayClient.require_passing_checks`) |
+| Deploy trigger on every seat | A seat that never picks up a new image. Seats created through the API had none (the spare `jg4grp` was stuck on an old build); the backend now creates one |
+| `scripts/verify-seat.py` | A deploy that "succeeded" but shows the stock desktop. Reads the real menu icon, theme version, watcher, dock position, and noVNC branding from each seat |
+
 ## Making a change
 
 1. **Desktop:** edit `vendor/reavion-xfce`. **noVNC or driver:** edit the sibling repo, then copy it in:
@@ -41,7 +52,11 @@ Pushing `reavion-vnc` or `reavion-images` triggers the image cascade (vnc → xf
    select status, count(*) from runs where status in ('queued','running','waiting_seat','waiting_user') group by status;
    select status, count(*) from employees where status in ('working','sleeping') group by status;
    ```
-6. After the deploy, open a seat and check: the Reavion mark next to **Applications**, the dock on the bottom edge, the Reavion tab on the left edge of noVNC.
+6. After the deploy, verify every seat (keys come from the backend, never commit them):
+   ```bash
+   SEATS='{"abc123": "MCP_KEY", ...}' python3 scripts/verify-seat.py --env
+   ```
+   It must print `ok` for each seat. Then open one and look: the Reavion mark next to **Applications**, the dock on the bottom edge, the Reavion tab on the left edge of noVNC.
 
 ## How the desktop gets branded at runtime
 

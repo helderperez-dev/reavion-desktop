@@ -1,0 +1,36 @@
+name: seat-checks
+
+# Every push to main redeploys all customer seats on Railway, so the seat
+# image must pass these checks. Railway waits for this check before deploying.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: reavion-docker
+
+      - name: Clone sibling sources (noVNC, driver)
+        id: siblings
+        env:
+          TOKEN: ${{ secrets.REAVION_DISPATCH_TOKEN }}
+        run: |
+          if [ -z "${TOKEN}" ]; then
+            echo "::warning::REAVION_DISPATCH_TOKEN missing: skipping vendor drift check"
+            echo "skip=1" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git clone --depth 1 "https://x-access-token:${TOKEN}@github.com/helderperez-dev/reavion-vnc.git" reavion-vnc
+          git clone --depth 1 "https://x-access-token:${TOKEN}@github.com/helderperez-dev/reavion-driver.git" reavion-driver
+          echo "skip=0" >> "$GITHUB_OUTPUT"
+
+      - name: Preflight
+        working-directory: reavion-docker
+        env:
+          SKIP_VENDOR_DRIFT: ${{ steps.siblings.outputs.skip }}
+        run: scripts/preflight.sh
