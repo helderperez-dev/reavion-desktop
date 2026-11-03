@@ -70,6 +70,8 @@ RUN set -eux; \
     install -d -o reavion -g reavion -m 0755 /home/reavion/.npm
 
 COPY image/google-chrome-wrapper.sh /usr/local/bin/google-chrome-wrapper.sh
+# Managed Chrome policy: hide the --no-sandbox warning bar over agent pages (the flag is required under cap_drop ALL).
+COPY image/chrome-policies.json /etc/opt/chrome/policies/managed/reavion.json
 RUN set -eux; \
     case "${TARGETARCH}" in \
       arm64|aarch64) deb_arch=arm64 ;; \

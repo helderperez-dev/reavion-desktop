@@ -13,7 +13,7 @@ Every seat (one Railway service per customer machine) is built **from this repo*
 | XFCE desktop: theme, panel, icons, wallpaper, GTK, fonts | `vendor/reavion-xfce` | **This repo.** Edit it here. |
 | noVNC viewer: Reavion gate, control rail, logos | `vendor/reavion-xfce/vendor/reavion-vnc` | [`reavion-vnc`](../../reavion-vnc) repo |
 | reavion-driver (MCP tools, Rust) | `vendor/reavion-driver/rust` | [`reavion-driver`](../../reavion-driver) repo |
-| Chrome, Caddy, supergateway, supervisor programs | `image/` | This repo |
+| Chrome (wrapper flags and the managed policy `image/chrome-policies.json`, which hides the --no-sandbox warning bar), Caddy, supergateway, supervisor programs | `image/` | This repo |
 
 The registry images are **not** on the seat path today:
 

@@ -51,7 +51,7 @@ fi
 
 # --force-renderer-accessibility: required by reavion-driver on Linux for exact
 # browser bind + semantic snapshots.
-# --no-sandbox: needed under cap_drop ALL; banner is expected, not a bind blocker.
+# --no-sandbox: needed under cap_drop ALL; its warning bar is hidden by the managed policy (chrome-policies.json).
 # --remote-debugging-port: loopback only — not published outside the container.
 exec "$REAL" \
   --user-data-dir="$USER_DATA" \
