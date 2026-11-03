@@ -3,7 +3,7 @@
 # Safe for persistent VOLUME /home/reavion — reseeds when THEME_VERSION bumps.
 set -euo pipefail
 
-THEME_VERSION="6"
+THEME_VERSION="8"
 STAMP="${HOME}/.config/reavion-desktop-theme.version"
 SHARE="/usr/share/reavion-desktop"
 WALLPAPER="/usr/share/backgrounds/reavion/reavion-mountains.jpg"
@@ -125,19 +125,13 @@ if command -v xfconf-query >/dev/null 2>&1 && xset q >/dev/null 2>&1; then
             id="${prop##*-}"
             type="$(xfconf-query -c xfce4-panel -p "${prop}" 2>/dev/null || true)"
             case "${type}" in
-              applicationsmenu)
-                if [[ -f /usr/share/xfce4/panel/plugins/whiskermenu.desktop ]] \
-                  || [[ -e /usr/lib/x86_64-linux-gnu/xfce4/panel/plugins/libwhiskermenu.so ]] \
-                  || [[ -e /usr/lib/xfce4/panel/plugins/libwhiskermenu.so ]]; then
-                  xfconf-query -c xfce4-panel -p "${prop}" -s "whiskermenu" 2>/dev/null || true
-                  write_whisker_rc "${id}"
-                else
-                  xfconf-query -c xfce4-panel -p "${prop}/button-icon" -n -t string -s "reavion-mark" 2>/dev/null || true
-                  xfconf-query -c xfce4-panel -p "${prop}/button-title" -n -t string -s "Applications" 2>/dev/null || true
-                fi
-                ;;
-              whiskermenu)
-                write_whisker_rc "${id}"
+              applicationsmenu|whiskermenu)
+                # Brand the menu in place. Swapping the plugin type for Whisker does
+                # not stick: the running panel writes its own config back.
+                xfconf-query -c xfce4-panel -p "${prop}/button-icon" -n -t string -s "reavion-mark" 2>/dev/null || true
+                xfconf-query -c xfce4-panel -p "${prop}/button-title" -n -t string -s "Applications" 2>/dev/null || true
+                xfconf-query -c xfce4-panel -p "${prop}/show-button-title" -n -t bool -s true 2>/dev/null || true
+                if [[ "${type}" == "whiskermenu" ]]; then write_whisker_rc "${id}"; fi
                 ;;
             esac
           fi
@@ -175,7 +169,7 @@ if command -v xfconf-query >/dev/null 2>&1 && xset q >/dev/null 2>&1; then
   fi
 
   # One panel restart per theme version so Whisker/Papirus/CSS pick up cleanly.
-  if [[ ! -f "${PANEL_RESTART_FLAG}" ]] && command -v xfce4-panel >/dev/null 2>&1; then
+  if [[ "${REAVION_PANEL_LIVE:-0}" != "1" && ! -f "${PANEL_RESTART_FLAG}" ]] && command -v xfce4-panel >/dev/null 2>&1; then
     if pgrep -u "$(id -u)" -x xfce4-panel >/dev/null 2>&1; then
       xfce4-panel -r >/dev/null 2>&1 || true
       printf '%s\n' "${THEME_VERSION}" > "${PANEL_RESTART_FLAG}"

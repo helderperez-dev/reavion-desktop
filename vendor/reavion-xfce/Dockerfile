@@ -121,7 +121,7 @@ RUN chmod +x /usr/local/bin/*.sh \
     && printf '[Desktop Entry]\nHidden=true\n' > /home/reavion/.config/autostart/xfce4-power-manager.desktop \
     && printf '[Desktop Entry]\nHidden=true\n' > /home/reavion/.config/autostart/xfce4-screensaver.desktop \
     && cp -a /usr/share/reavion-desktop/skel/autostart/. /home/reavion/.config/autostart/ 2>/dev/null || true \
-    && printf '6\n' > /usr/share/reavion-desktop/THEME_VERSION \
+    && printf '8\n' > /usr/share/reavion-desktop/THEME_VERSION \
     && gtk-update-icon-cache -f /usr/share/icons/hicolor 2>/dev/null || true \
     && chown -R reavion:reavion /home/reavion /run/user/1000 \
     && chmod 0700 /run/user/1000

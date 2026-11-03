@@ -200,17 +200,38 @@ body:has(#noVNC_verify_server_dlg.noVNC_open) #noVNC_connect_dlg {
   background: rgba(255, 255, 255, 0.14) !important;
 }
 
-/* Drag handle — same toggle affordance, no blue texture */
+/* Handle: a visible tab with the Reavion mark, so the controls are easy to find
+   while the rail is tucked away. */
 #noVNC_control_bar_handle {
-  background-color: #1a1a1d !important;
+  left: -26px !important;
+  width: calc(100% + 52px) !important;
+  height: 48px !important;
+  transform: translateY(34px) !important;
+  background-color: #26262b !important;
   background-image: none !important;
-  border: 1px solid var(--reavion-line) !important;
-  border-radius: 8px !important;
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.35) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45) !important;
+}
+
+#noVNC_control_bar_handle:hover {
+  background-color: #33333a !important;
 }
 
 #noVNC_control_bar_handle:after {
-  filter: invert(1) opacity(0.55);
+  top: 15px !important;
+  right: 6px !important;
+  width: 16px !important;
+  height: 16px !important;
+  background: url("../images/reavion-mark-white.png") center / contain no-repeat !important;
+  filter: none !important;
+  opacity: 0.95;
+  transform: none !important;
+}
+
+.noVNC_right #noVNC_control_bar_handle:after {
+  left: 6px !important;
+  right: auto !important;
 }
 
 #noVNC_control_bar_hint {

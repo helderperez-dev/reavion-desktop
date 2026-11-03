@@ -32,4 +32,10 @@ if [[ -x /usr/local/bin/reavion-desktop-theme.sh ]]; then
   /usr/local/bin/reavion-desktop-theme.sh || true
 fi
 
+# Panel branding needs the panel's own config, which appears a few seconds
+# after startxfce4; the watcher applies it then and re-places the dock on resize.
+if [[ -x /usr/local/bin/reavion-desktop-watch.sh ]]; then
+  /usr/local/bin/reavion-desktop-watch.sh &
+fi
+
 wait "$xfce_pid"
