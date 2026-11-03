@@ -178,8 +178,11 @@ const UI = {
         // (avoids grey letterbox bars from aspect-ratio "scale" fit).
         UI.initSetting('resize', 'remote');
         // Migrate browsers that still have the old "scale" default saved.
+        // Only a saved preference is migrated: a page that asks for "scale" in its URL
+        // (the app's small machine window) must keep it, or it would resize the machine.
         if (WebUtil.readSetting('reavion_fit_v1', '') !== '1') {
-            if (WebUtil.readSetting('resize', 'remote') === 'scale') {
+            if (WebUtil.getConfigVar('resize') === null &&
+                WebUtil.readSetting('resize', 'remote') === 'scale') {
                 WebUtil.writeSetting('resize', 'remote');
                 UI.updateSetting('resize');
             }
@@ -189,7 +192,8 @@ const UI = {
         UI.initSetting('quality', 8);
         // Browsers that saved the old default move up once; a user's own choice stays.
         if (WebUtil.readSetting('reavion_quality_v1', '') !== '1') {
-            if (WebUtil.readSetting('quality', '8') === '6') {
+            if (WebUtil.getConfigVar('quality') === null &&
+                WebUtil.readSetting('quality', '8') === '6') {
                 WebUtil.writeSetting('quality', '8');
             }
             WebUtil.writeSetting('reavion_quality_v1', '1');
