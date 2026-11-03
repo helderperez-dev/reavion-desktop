@@ -48,6 +48,8 @@ grep -q 'button-icon" -n -t string -s "reavion-mark"' vendor/reavion-xfce/src/sc
 [[ -f vendor/reavion-xfce/assets/icons/hicolor/32x32/apps/reavion-mark.png ]] || bad "reavion-mark icon missing"
 [[ -f vendor/reavion-xfce/assets/icons/hicolor/scalable/apps/reavion-mark.svg ]] \
   || bad "scalable reavion-mark.svg missing (panel icon renders blurry from PNG only)"
+grep -q -- "--hide-crash-restore-bubble" image/google-chrome-wrapper.sh \
+  || bad "Chrome wrapper lost --hide-crash-restore-bubble (Restore pages? bubble covers the agent's page after restarts)"
 ok "desktop rules"
 
 # 4. noVNC: Reavion gate, handle tab, cache-buster.

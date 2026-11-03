@@ -38,6 +38,17 @@ VOLUME_ROOT="${CHROME_PROFILE_DIR:-${HOME_DIR}/.config/google-chrome}"
 USER_DATA="${CHROME_USER_DATA_DIR:-${VOLUME_ROOT}/cdp-userdata}"
 mkdir -p "$USER_DATA"
 
+# Seat restarts (deploys) kill Chrome, so on the next start it shows "Restore pages?
+# Chrome didn't shut down correctly" over the page the agent works on. Before a
+# fresh start (never while Chrome runs), mark the last session as a clean exit.
+if ! pgrep -u "$(id -u)" -f -- "--user-data-dir=${USER_DATA}" >/dev/null 2>&1; then
+  for prefs in "$USER_DATA"/*/Preferences; do
+    [ -f "$prefs" ] || continue
+    sed -i -e 's/"exit_type":"Crashed"/"exit_type":"Normal"/g' \
+           -e 's/"exited_cleanly":false/"exited_cleanly":true/g' "$prefs" 2>/dev/null || true
+  done
+fi
+
 # --force-renderer-accessibility: required by reavion-driver on Linux for exact
 # browser bind + semantic snapshots.
 # --no-sandbox: needed under cap_drop ALL; banner is expected, not a bind blocker.
@@ -49,6 +60,7 @@ exec "$REAL" \
   --disable-gpu \
   --no-first-run \
   --no-default-browser-check \
+  --hide-crash-restore-bubble \
   --password-store=basic \
   --force-renderer-accessibility \
   --remote-debugging-address=127.0.0.1 \
