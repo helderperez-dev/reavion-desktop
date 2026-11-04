@@ -114,6 +114,13 @@ const UI = {
         // Bootstrap fallback input handler
         UI.keyboardinputReset();
 
+        // Embedded in the Reavion app (embed=1): the app draws its own controls, so
+        // the viewer shows only the screen. Errors still show.
+        const embed = WebUtil.getConfigVar('embed', '0');
+        if (embed === '1' || embed === 'true') {
+            document.documentElement.classList.add('noVNC_embed');
+        }
+
         UI.openControlbar();
 
         UI.updateVisualState('init');
