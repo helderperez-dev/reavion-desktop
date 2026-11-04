@@ -43,6 +43,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     procps \
     sudo \
     supervisor \
+    tzdata \
     wmctrl \
     tigervnc-standalone-server \
     tigervnc-tools \

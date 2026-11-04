@@ -49,6 +49,14 @@ if ! pgrep -u "$(id -u)" -f -- "--user-data-dir=${USER_DATA}" >/dev/null 2>&1; t
   done
 fi
 
+# The language the person picked for this machine (Settings, Browser language): the browser's own
+# language and the one it asks websites for, so sites show their local version. Empty = Chrome default.
+_lang_flags=()
+if [ -n "${REAVION_BROWSER_LANG:-}" ]; then
+  _base="${REAVION_BROWSER_LANG%%-*}"
+  _lang_flags=(--lang="${REAVION_BROWSER_LANG}" --accept-lang="${REAVION_BROWSER_LANG},${_base},en")
+fi
+
 # --force-renderer-accessibility: required by reavion-driver on Linux for exact
 # browser bind + semantic snapshots.
 # --no-sandbox: needed under cap_drop ALL; its warning bar is hidden by the managed policy (chrome-policies.json).
@@ -71,4 +79,5 @@ exec "$REAL" \
   --window-position=0,0 \
   --force-device-scale-factor=1 \
   --high-dpi-support=1 \
+  "${_lang_flags[@]}" \
   "$@"
